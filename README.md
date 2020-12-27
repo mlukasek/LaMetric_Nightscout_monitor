@@ -1,2 +1,2 @@
-# LaMetric_Nightscout_monitor
+# LaMetric Nightscout monitor
 Nightscout monitor app for LaMetric TIME
