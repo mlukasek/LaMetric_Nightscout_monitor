@@ -15,4 +15,4 @@ This LaMetric APP part has to run on a web server. It converts data from Nightsc
 
 <img width="670" src="https://raw.githubusercontent.com/mlukasek/LaMetric_Nightscout_monitor/main/img/LaMetric_NS-mon_Graph.png">
 
-Sugarmate users should enter sugarmate.io as Nightscout site and sugermate username, such as ab1xyz to Security token.
+Sugarmate users should enter sugarmate.io as Nightscout site and Sugarmate username, such as ab1xyz to Security token.
