@@ -11,6 +11,8 @@
 
 This LaMetric APP part has to run on a web server. It converts data from Nightscout API to LaMetric API. The second part of LaMetric APP has to be created at developer.lametric.com site and point to this service.
 
+To install the APP, just enter the LaMetric store, ADD APP and configure it with your credentials and parameters.
+
 <img width="670" src="https://raw.githubusercontent.com/mlukasek/LaMetric_Nightscout_monitor/main/img/LaMetric_NS-mon_TimeAgo.png">
 
 <img width="670" src="https://raw.githubusercontent.com/mlukasek/LaMetric_Nightscout_monitor/main/img/LaMetric_NS-mon_Graph.png">
