@@ -83,12 +83,19 @@ public class NSConvert1 : IHttpHandler
                 }
                 catch (WebException e)
                 {
-                    using (WebResponse response = e.Response)
+                    if (e.Response != null)
                     {
-                        HttpWebResponse httpResponse = (HttpWebResponse) response;
-                        dsStatus = httpResponse.StatusCode;
+                        using (WebResponse response = e.Response)
+                        {
+                            HttpWebResponse httpResponse = (HttpWebResponse) response;
+                            dsStatus = httpResponse.StatusCode;
+                        }
                     }
-
+                    else
+                    {
+                        // Network-level error (SSL/TLS failure, timeout, DNS) — no HTTP response available
+                        dsStatus = HttpStatusCode.ServiceUnavailable;
+                    }
                 }
 
                 long epoch = (long)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
