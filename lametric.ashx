@@ -114,7 +114,7 @@ public class NSConvert1 : IHttpHandler
                         serializer2.RegisterConverters(new[] { new DynamicJsonConverter() });
                         dynamic data2 = serializer2.Deserialize(json2, typeof(object));
 
-                        long sensortime = data2.bgnow.mills / (long)1000;
+                        long sensortime = Convert.ToInt64(data2.bgnow.mills) / (long)1000;
 
                         long sensordiff = epoch - sensortime;
                         string direction = data2.bgnow.sgvs[0].direction;
