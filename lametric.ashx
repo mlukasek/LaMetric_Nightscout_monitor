@@ -12,6 +12,16 @@ public class NSConvert1 : IHttpHandler
     public void ProcessRequest(HttpContext context)
     {
         string site = context.Request["site"];
+        if (site != null)
+        {
+            // Tolerate full URLs like "https://example.com/" entered instead of a bare hostname
+            site = site.Trim();
+            if (site.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                site = site.Substring(8);
+            else if (site.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
+                site = site.Substring(7);
+            site = site.TrimEnd('/');
+        }
         string token = context.Request["token"];
         string units = context.Request["units"];
         string sgvlowstr = context.Request["low"];
@@ -119,14 +129,17 @@ public class NSConvert1 : IHttpHandler
                         long sensordiff = epoch - sensortime;
                         string direction = data2.bgnow.sgvs[0].direction;
 
+                        // Nightscout returns bgnow.last, Nocturne returns only bgnow.mgdl
+                        dynamic bgLast = data2.bgnow.last ?? data2.bgnow.mgdl;
+
                         string iconstr;
 
                         bool redicon = false;
                         if (units == "mmol/L")
                         {
-                            redicon = ((data2.bgnow.last / 18f) <= sgvlow) || ((data2.bgnow.last / 18f) >= sgvhigh);
+                            redicon = ((bgLast / 18f) <= sgvlow) || ((bgLast / 18f) >= sgvhigh);
                         } else {
-                            redicon = (data2.bgnow.last <= sgvlow) || (data2.bgnow.last >= sgvhigh);
+                            redicon = (bgLast <= sgvlow) || (bgLast >= sgvhigh);
                         }
 
                         if (direction == "DoubleDown" || direction == "DOUBLE_DOWN")
@@ -162,10 +175,10 @@ public class NSConvert1 : IHttpHandler
                         respstr += "{\"text\":\"";
                         if (units == "mmol/L")
                         {
-                            respstr += (data2.bgnow.last / 18f).ToString("0.0;-0.0;0");
+                            respstr += (bgLast / 18f).ToString("0.0;-0.0;0");
                             respstr += (((float)data2.delta.mgdl) / 18f).ToString("+0.0;-0.0;+0");
                         } else {
-                            respstr += data2.bgnow.last.ToString();
+                            respstr += bgLast.ToString();
                             respstr += data2.delta.mgdl.ToString("+0;-0;+0");
                         }
                         respstr += "\",\"icon\":\"" + iconstr + "\",\"index\":0}";
